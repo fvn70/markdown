@@ -36,15 +36,42 @@ def new_line():
     return "\n"
 
 
-cmd_set = set("plain bold italic header link inline-code new-line !help !done".split())
+def m_list(order=None):
+    ord = False if order is None else order
+    while True:
+        nums = int(input("Number of rows: "))
+        if nums > 0:
+            break
+        else:
+            print("The number of rows should be greater than zero")
+    rows = read_rows(nums)
+    digs = [n for n in range(nums)]
+    if ord:
+        txt = list(map(lambda n, s: f"{n + 1}. " + s, digs, rows))
+    else:
+        txt = list(map(lambda s: "* " + s, rows))
+    return "\n".join(txt)
+
+
+def read_rows(n):
+    lst = []
+    for i in range(n):
+        lst.append(input(f"Row #{i + 1}: "))
+    return lst
+
+
+cmd_set = set("plain bold italic header link inline-code ordered-list unordered-list new-line !help !done".split())
 text = ""
 while True:
     cmd = input("Choose a formatter: ")
     if cmd not in cmd_set:
         print("Unknown formatting type or command")
     elif cmd == "!help":
-        print("Available formatters: plain bold italic header link inline-code new-line")
+        print("Available formatters: plain bold italic header link inline-code ordered-list unordered-list new-line")
         print("Special commands: !help !done")
+    elif cmd.endswith("-list"):
+        text += m_list(cmd.startswith("ordered")) + "\n"
+        print(text)
     elif cmd == "!done":
         break
     else:
