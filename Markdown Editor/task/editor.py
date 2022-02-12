@@ -73,6 +73,9 @@ while True:
         text += m_list(cmd.startswith("ordered")) + "\n"
         print(text)
     elif cmd == "!done":
+        file = open("output.md", "w")
+        file.write(text)
+        file.close()
         break
     else:
         cmd = cmd.replace("-", "_")
